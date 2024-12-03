@@ -24,7 +24,7 @@ class UserPostRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'middle_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
             'birthday' => 'required|date',
             'email' => 'required|string|lowercase|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:255',
