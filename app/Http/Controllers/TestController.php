@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TestPostRequest;
 use App\Models\Test;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class TestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TestPostRequest $request)
     {
         return redirect()->route('tests.show');
     }
@@ -50,7 +51,7 @@ class TestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Test $test)
+    public function update(TestPostRequest $request, Test $test)
     {
         return redirect()->route('tests.show', []);
     }

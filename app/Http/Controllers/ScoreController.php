@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ScorePostRequest;
 use App\Models\Score;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class ScoreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ScorePostRequest $request)
     {
         return redirect()->route('scores.show');
     }
@@ -50,7 +51,7 @@ class ScoreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Score $score)
+    public function update(ScorePostRequest $request, Score $score)
     {
         return redirect()->route('scores.show', []);
     }

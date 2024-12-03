@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupPostRequest;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GroupPostRequest $request)
     {
         return redirect()->route('groups.show');
     }
@@ -50,7 +51,7 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(GroupPostRequest $request, Group $group)
     {
         return redirect()->route('groups.show', []);
     }

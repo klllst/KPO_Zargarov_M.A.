@@ -28,6 +28,7 @@ class UserPostRequest extends FormRequest
             'birthday' => 'required|date',
             'email' => 'required|string|lowercase|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:255',
+            'group_id' => 'sometimes|integer|exists:groups,id'
         ];
     }
 }

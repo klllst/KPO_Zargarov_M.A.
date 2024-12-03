@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubjectPostRequest;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubjectPostRequest $request)
     {
         return redirect()->route('subjects.show');
     }
@@ -50,7 +51,7 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subject $subject)
+    public function update(SubjectPostRequest $request, Subject $subject)
     {
         return redirect()->route('subjects.show', []);
     }
