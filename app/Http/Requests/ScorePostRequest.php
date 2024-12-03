@@ -26,15 +26,15 @@ class ScorePostRequest extends FormRequest
         return [
             'student_id' => 'required|integer|exists:students,id',
             'teacher_id' => 'required|integer|exists:teachers,id',
-            'test_id' => [
+            'test_id' => 'required|integer|exists:tests,id',
+            'mark' => [
                 'required',
-                'integer',
-                'exists:tests,id',
-                Rule::unique('scores', 'test_id')
+                'string',
+                Rule::in(ScoreEnum::cases()),
+                Rule::unique('scores', 'mark')
                     ->where('student_id', $this->student_id)
-                    ->where('teacher_id', $this->teacher_id)
-            ],
-            'mark' => ['required', 'string', Rule::in(ScoreEnum::cases()),]
+                    ->where('test_id', $this->test_id)
+            ]
         ];
     }
 }
