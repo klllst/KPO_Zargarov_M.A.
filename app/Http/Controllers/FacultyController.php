@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FacultyPostRequest;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class FacultyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FacultyPostRequest $request)
     {
         return redirect()->route('faculties.show');
     }
@@ -50,7 +51,7 @@ class FacultyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Faculty $faculty)
+    public function update(FacultyPostRequest $request, Faculty $faculty)
     {
         return redirect()->route('faculties.show', []);
     }
