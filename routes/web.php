@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('profile.edit');
 });
 
 Route::get('/dashboard', function () {
@@ -32,15 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-Route::resources([
-    'users' => UserController::class,
-    'faculties' => FacultyController::class,
-    'groups' => GroupController::class,
-    'subjects' => SubjectController::class,
-    'tests' => TestController::class,
-    'scores' => ScoreController::class,
-]);
+    Route::resources([
+        'users' => UserController::class,
+        'faculties' => FacultyController::class,
+        'groups' => GroupController::class,
+        'subjects' => SubjectController::class,
+        'tests' => TestController::class,
+        'scores' => ScoreController::class,
+    ]);
+});
 
 require __DIR__.'/auth.php';
