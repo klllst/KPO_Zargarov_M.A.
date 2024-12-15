@@ -13,7 +13,11 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        return view();
+        $subjects = Subject::paginate(15);
+
+        return view('subjects.index', [
+            'subjects' => $subjects,
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return view();
+        return view('subjects.create');
     }
 
     /**
@@ -29,15 +33,9 @@ class SubjectController extends Controller
      */
     public function store(SubjectPostRequest $request)
     {
-        return redirect()->route('subjects.show');
-    }
+        Subject::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Subject $subject)
-    {
-        return view();
+        return redirect()->route('subjects.index');
     }
 
     /**
@@ -45,7 +43,9 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view();
+        return view('subjects.edit', [
+            'subject' => $subject,
+        ]);
     }
 
     /**
@@ -53,7 +53,9 @@ class SubjectController extends Controller
      */
     public function update(SubjectPostRequest $request, Subject $subject)
     {
-        return redirect()->route('subjects.show', []);
+        $subject->update($request->validated());
+
+        return redirect()->route('subjects.index');
     }
 
     /**
@@ -61,6 +63,8 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
+        $subject->delete();
+
         return redirect()->route('subjects.index');
     }
 }

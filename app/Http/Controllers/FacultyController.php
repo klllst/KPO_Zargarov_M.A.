@@ -13,7 +13,11 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        return view();
+        $faculties = Faculty::paginate(15);
+
+        return view('faculties.index', [
+            'faculties' => $faculties,
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class FacultyController extends Controller
      */
     public function create()
     {
-        return view();
+        return view('faculties.create');
     }
 
     /**
@@ -29,15 +33,9 @@ class FacultyController extends Controller
      */
     public function store(FacultyPostRequest $request)
     {
-        return redirect()->route('faculties.show');
-    }
+        Faculty::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Faculty $faculty)
-    {
-        return view();
+        return redirect()->route('faculties.index');
     }
 
     /**
@@ -45,7 +43,9 @@ class FacultyController extends Controller
      */
     public function edit(Faculty $faculty)
     {
-        return view();
+        return view('faculties.edit', [
+            'faculty' => $faculty,
+        ]);
     }
 
     /**
@@ -53,7 +53,9 @@ class FacultyController extends Controller
      */
     public function update(FacultyPostRequest $request, Faculty $faculty)
     {
-        return redirect()->route('faculties.show', []);
+        $faculty->update($request->validated());
+
+        return redirect()->route('faculties.index');
     }
 
     /**
@@ -61,6 +63,8 @@ class FacultyController extends Controller
      */
     public function destroy(Faculty $faculty)
     {
+        $faculty->delete();
+
         return redirect()->route('faculties.index');
     }
 }

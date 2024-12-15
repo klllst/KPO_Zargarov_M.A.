@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ScorePostRequest;
 use App\Models\Score;
-use Illuminate\Http\Request;
+use App\Models\Test;
 
 class ScoreController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Test $test)
     {
-        return view();
+        return view('test-scores.index', [
+            'test' => $test,
+            'scores' => $test->scores()->with(['students', 'teacher'])->get(),
+        ]);
     }
 
     /**
@@ -62,5 +65,10 @@ class ScoreController extends Controller
     public function destroy(Score $score)
     {
         return redirect()->route('scores.index');
+    }
+
+    public function selfScores()
+    {
+
     }
 }

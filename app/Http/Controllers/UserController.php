@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
+use App\Models\Group;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -13,7 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view();
+        $users = User::with('userable')->paginate(15);
+
+        return view('users.index', [
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -21,14 +27,20 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view();
+        $groups = Group::all();
+
+        return view('users.create', [
+            'groups' => $groups,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserPostRequest $request)
+    public function store(UserPostRequest $request, UserService $service)
     {
+        $service->create($request->validated());
+
         return redirect()->route('users.show');
     }
 
@@ -45,7 +57,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view();
+        $groups = Group::all();
+
+        return view('users.edit', [
+            'user' => $user,
+            'groups' => $groups,
+        ]);
     }
 
     /**
@@ -53,7 +70,9 @@ class UserController extends Controller
      */
     public function update(UserPostRequest $request, User $user)
     {
-        return redirect()->route('users.show', []);
+        return redirect()->route('users.show', [
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -61,6 +80,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->userable->delete();
+        $user->delete();
+
         return redirect()->route('users.index');
     }
 }

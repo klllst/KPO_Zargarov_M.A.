@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupPostRequest;
+use App\Models\Faculty;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,11 @@ class GroupController extends Controller
      */
     public function index()
     {
-        return view();
+        $groups = Group::paginate(15);
+
+        return view('groups.index', [
+            'groups' => $groups,
+        ]);
     }
 
     /**
@@ -21,7 +26,9 @@ class GroupController extends Controller
      */
     public function create()
     {
-        return view();
+        return view('groups.create', [
+            'faculties' => Faculty::all(),
+        ]);
     }
 
     /**
@@ -29,15 +36,9 @@ class GroupController extends Controller
      */
     public function store(GroupPostRequest $request)
     {
-        return redirect()->route('groups.show');
-    }
+        Group::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Group $group)
-    {
-        return view();
+        return redirect()->route('groups.index');
     }
 
     /**
@@ -45,7 +46,10 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        return view();
+        return view('groups.edit', [
+            'group' => $group,
+            'faculties' => Faculty::all(),
+        ]);
     }
 
     /**
@@ -53,7 +57,11 @@ class GroupController extends Controller
      */
     public function update(GroupPostRequest $request, Group $group)
     {
-        return redirect()->route('groups.show', []);
+        $group->update($request->validated());
+
+        return redirect()->route('groups.show', [
+            'group' => $group
+        ]);
     }
 
     /**
@@ -61,6 +69,8 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
+        $group->delete();
+
         return redirect()->route('groups.index');
     }
 }
