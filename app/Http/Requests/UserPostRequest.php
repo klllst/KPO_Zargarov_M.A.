@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserPostRequest extends FormRequest
 {
@@ -28,7 +30,8 @@ class UserPostRequest extends FormRequest
             'birthday' => 'required|date',
             'email' => 'required|string|lowercase|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:255',
-            'group_id' => 'sometimes|integer|exists:groups,id'
+            'type' => ['required', 'string', Rule::in(UserType::cases())],
+            'group_id' => 'sometimes|integer|exists:groups,id',
         ];
     }
 }
