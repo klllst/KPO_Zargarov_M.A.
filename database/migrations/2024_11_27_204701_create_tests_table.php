@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_id')->constrained('groups');
-            $table->foreignId('subject_id')->constrained('subjects');
+            $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete();
+            $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->string('type');
             $table->integer('semester');
             $table->timestamps();

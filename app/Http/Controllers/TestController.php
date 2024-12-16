@@ -87,7 +87,8 @@ class TestController extends Controller
         $tests = $student->group->tests->groupBy('semester');
 
         return view('tests.self-tests', [
-            'test' => $tests,
+            'tests' => $tests,
+            'groupName' => $student->group->groupName,
         ]);
     }
 }

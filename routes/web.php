@@ -44,8 +44,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'student'])->group(function () {
-    Route::get('self-tests', [TestController::class, 'selfTests']);
-    Route::get('self-scores', [ScoreController::class, 'selfScores']);
+    Route::prefix('tests')->group(function () {
+        Route::get('self-tests', [TestController::class, 'selfTests'])->name('tests.self-tests');
+    });
+
+    Route::prefix('scores')->group(function () {
+        Route::get('self-scores', [ScoreController::class, 'selfScores'])->name('scores.self-scores');
+    });
 });
 
 require __DIR__.'/auth.php';

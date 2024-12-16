@@ -11,12 +11,12 @@ enum ScoreEnum: string
     case Good = 'Хорошо';
     case Great = 'Отлично';
     case Pass = 'Зачтено';
-    case Fail = 'Fail';
+    case Fail = 'Не зачтено';
 
-    public function getTestTypeScores(TestType $testType): array
+    public static function getTestTypeScores(string $testType): array
     {
         return match ($testType) {
-            TestType::Exam, TestType::CourseWork, TestType::DifTest => [
+            TestType::Exam->value, TestType::CourseWork->value, TestType::DifTest->value => [
                 self::WinthoutScore,
                 self::Absence,
                 self::Bad,
@@ -25,12 +25,19 @@ enum ScoreEnum: string
                 self::Great,
             ],
 
-            TestType::Test => [
+            TestType::Test->value => [
                 self::WinthoutScore,
                 self::Absence,
                 self::Fail,
                 self::Pass,
             ],
         };
+    }
+
+    public static function getRandomScore(string $testType)
+    {
+        $scores = self::getTestTypeScores($testType);
+
+        return $scores[array_rand($scores)];
     }
 }
