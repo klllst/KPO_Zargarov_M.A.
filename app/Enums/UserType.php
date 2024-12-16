@@ -26,4 +26,13 @@ enum UserType: string
     {
         return [self::Teacher, self::Student];
     }
+
+    public static function getTypeByClass(string $class)
+    {
+        return match ($class) {
+            Student::class => self::Student,
+            Teacher::class => self::Teacher,
+            Admin::class => self::Administrator,
+        };
+    }
 }

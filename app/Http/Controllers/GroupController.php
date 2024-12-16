@@ -59,9 +59,7 @@ class GroupController extends Controller
     {
         $group->update($request->validated());
 
-        return redirect()->route('groups.show', [
-            'group' => $group
-        ]);
+        return redirect()->route('groups.index');
     }
 
     /**

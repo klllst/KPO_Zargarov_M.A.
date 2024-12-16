@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
 use App\Models\Group;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -15,7 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('userable')->paginate(15);
+        $users = User::where('userable_type', Student::class)
+            ->orWhere('userable_type', Teacher::class)
+            ->with('userable')
+            ->paginate(15);
 
         return view('users.index', [
             'users' => $users,
@@ -41,15 +46,7 @@ class UserController extends Controller
     {
         $service->create($request->validated());
 
-        return redirect()->route('users.show');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        return view();
+        return redirect()->route('users.index');
     }
 
     /**
@@ -70,9 +67,7 @@ class UserController extends Controller
      */
     public function update(UserPostRequest $request, User $user)
     {
-        return redirect()->route('users.show', [
-            'user' => $user,
-        ]);
+        return redirect()->route('users.index');
     }
 
     /**

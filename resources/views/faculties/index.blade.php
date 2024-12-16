@@ -36,6 +36,9 @@
             @endforelse
             </tbody>
         </table>
+        <div class="mt-4">
+            {{ $faculties->links() }}
+        </div>
     </div>
 </x-app-layout>
 

@@ -37,6 +37,9 @@
             @endforelse
             </tbody>
         </table>
+        <div class="mt-4">
+            {{ $groups->links() }}
+        </div>
     </div>
 </x-app-layout>
 

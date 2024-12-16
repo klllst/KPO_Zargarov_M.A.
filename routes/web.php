@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::resource('faculties', FacultyController::class)->except('show');
-    Route::resource('groups', GroupController::class)->except('show');
+    Route::resource('groups', GroupController::class);
     Route::resource('subjects', SubjectController::class)->except('show');
     Route::resource('tests', TestController::class)->except('show');
     Route::resource('tests.scores', ScoreController::class)->except('show');
