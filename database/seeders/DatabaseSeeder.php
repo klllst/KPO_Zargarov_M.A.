@@ -2,7 +2,14 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\ScoreEnum;
+use App\Enums\TestType;
+use App\Models\Faculty;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
+use App\Models\Test;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +19,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $faculties = Faculty::factory(5)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $groups = [];
+
+        foreach ($faculties as $faculty) {
+            for ($i = 1; $i <= 4; ++$i) {
+                $group = $faculty->groups()->create([
+                    'name' => 'Группа',
+                    'course' => $i,
+                    'number' => 1,
+                ]);
+                $groups[] = $group;
+            }
+        }
+
+        foreach ($groups as $group) {
+            for ($i = 1; $i <= 8; ++$i) {
+                $students = Student::factory(15)->create([
+                    'group_id' => $group->id,
+                ]);
+                foreach ($students as $student) {
+                    $user = User::factory()->create();
+                    $student->user()->save($user);
+                }
+
+                $subjects = Subject::factory(5)->create();
+                foreach ($subjects as $subject) {
+                    $subject->tests()->create([
+                        'group_id' => $group->id,
+                        'semester' => $i,
+                        'type' => TestType::getRandomType()->value,
+                    ]);
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ScorePostRequest;
 use App\Models\Score;
 use App\Models\Test;
+use Illuminate\Support\Facades\Auth;
 
 class ScoreController extends Controller
 {
@@ -69,6 +70,14 @@ class ScoreController extends Controller
 
     public function selfScores()
     {
+        $student = Auth::user()->userable->load(['scores', 'group.tests']);
 
+        $scores = $student->scores->map(function ($score) {
+            return collect(['score' => $score, 'test' => $score->test]);
+        })->groupBy('test.semester');
+
+        return view('scores.self-scores', [
+            'scores' => $scores,
+        ]);
     }
 }
