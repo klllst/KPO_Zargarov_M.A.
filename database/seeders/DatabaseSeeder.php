@@ -35,15 +35,14 @@ class DatabaseSeeder extends Seeder
         }
 
         foreach ($groups as $group) {
+            $students = Student::factory(20)->create([
+                'group_id' => $group->id,
+            ]);
+            foreach ($students as $student) {
+                $user = User::factory()->create();
+                $student->user()->save($user);
+            }
             for ($i = 1; $i <= 8; ++$i) {
-                $students = Student::factory(15)->create([
-                    'group_id' => $group->id,
-                ]);
-                foreach ($students as $student) {
-                    $user = User::factory()->create();
-                    $student->user()->save($user);
-                }
-
                 $subjects = Subject::factory(5)->create();
                 foreach ($subjects as $subject) {
                     $subject->tests()->create([
@@ -52,6 +51,25 @@ class DatabaseSeeder extends Seeder
                         'type' => TestType::getRandomType()->value,
                     ]);
                 }
+            }
+        }
+
+        $tests = Test::where('semester', 1)->with('group.students')->get();
+
+        foreach ($tests as $test) {
+            $teacher = Teacher::factory()->create();
+
+            $user = User::factory()->create();
+            $teacher->user()->save($user);
+
+            $students = $test->group->students;
+
+            foreach ($students as $student) {
+                $student->scores()->create([
+                    'teacher_id' => $teacher->id,
+                    'test_id' => $test->id,
+                    'mark' => ScoreEnum::getRandomScore($test->type),
+                ]);
             }
         }
     }

@@ -11,6 +11,7 @@
                 <th class="border border-gray-300 px-4 py-2 text-left w-16">ID</th>
                 <th class="border border-gray-300 px-4 py-2 text-left w-48">Email</th>
                 <th class="border border-gray-300 px-4 py-2 text-left max-w-xl">ФИО</th>
+                <th class="border border-gray-300 px-4 py-2 text-left max-w-xl">Роль</th>
                 <th class="border border-gray-300 px-4 py-2 text-left w-32">Действия</th>
             </tr>
             </thead>
@@ -20,9 +21,9 @@
                     <td class="border border-gray-300 px-4 py-2">{{ $user->id }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ $user->email }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ $user->userable?->fio }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $user->type->value }}</td>
                     <td class="border border-gray-300 px-4 py-2">
                         <div class="flex space-x-2">
-                            <a href="{{ route('users.show', [$user]) }}" class="bg-blue-500 text-white px-4 py-2 rounded">Просмотр</a>
                             <a href="{{ route('users.edit', [$user]) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Редактировать</a>
                             <form action="{{ route('users.destroy', [$user]) }}" method="POST">
                                 @csrf
@@ -39,5 +40,8 @@
             @endforelse
             </tbody>
         </table>
+        <div class="mt-4">
+            {{ $users->links() }}
+        </div>
     </div>
 </x-app-layout>

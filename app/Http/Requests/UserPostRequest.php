@@ -28,8 +28,8 @@ class UserPostRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'birthday' => 'required|date',
-            'email' => 'required|string|lowercase|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:255',
+            'email' => 'required|string|lowercase|email|max:255',
+            'password' => 'nullable|string|min:8|max:255',
             'type' => ['required', 'string', Rule::in(UserType::cases())],
             'group_id' => 'sometimes|integer|exists:groups,id',
         ];

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentsExport;
 use App\Http\Requests\GroupPostRequest;
 use App\Models\Faculty;
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GroupController extends Controller
 {
@@ -59,9 +61,7 @@ class GroupController extends Controller
     {
         $group->update($request->validated());
 
-        return redirect()->route('groups.show', [
-            'group' => $group
-        ]);
+        return redirect()->route('groups.index');
     }
 
     /**
@@ -72,5 +72,12 @@ class GroupController extends Controller
         $group->delete();
 
         return redirect()->route('groups.index');
+    }
+
+    public function export(Group $group)
+    {
+        $fileName = $group->groupName . '.xlsx';
+
+        return Excel::download(new StudentsExport($group), $fileName);
     }
 }

@@ -39,34 +39,38 @@
 
                         <div>
                             <x-input-label for="birthday" :value="__('Дата рождения')" />
-                            <x-text-input id="birthday" name="birthday" type="date" :value="$user?->birthday" class="mt-1 block w-full"/>
+                            <x-text-input id="birthday" name="birthday" type="date" :value="$user->userable->birthday" class="mt-1 block w-full"/>
                         </div>
 
-                        <div>
-                            <x-input-label for="type" :value="('Тип пользователя')" />
-                            <select
-                                id="type"
-                                name="type"
-                                x-data
-                                x-on:change="$dispatch('type-changed', $el.value)"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                @foreach (App\Enums\UserType::getCreateTypes() as $value)
-                                    <option value="{{ $value }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <div x-data="{ showGroupSelect: '{{ $user->type->value === 'Студент' ? 'true' : 'false' }}' === 'true' }">
+                            <div>
+                                <x-input-label for="type" :value="('Тип пользователя')" />
+                                <select
+                                    id="type"
+                                    name="type"
+                                    x-on:change="showGroupSelect = $event.target.value === 'Студент'"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                    @foreach (App\Enums\UserType::getCreateTypes() as $value)
+                                        <option value="{{ $value->value }}" @if ($user->type->value === $value->value) selected @endif>
+                                            {{ $value->value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div x-data="{ showGroupSelect: false }" x-on:type-changed.window="console.log($event.detail); showGroupSelect = $event.detail === 'Студент'">
                             <div x-show="showGroupSelect" class="mt-4">
                                 <x-input-label for="group_id" :value="('Группа')" />
                                 <select id="group_id" name="group_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                                     <option value="" disabled selected>Выберите группу</option>
                                     @foreach ($groups as $group)
-                                        <option value="{{ $group->id }}">{{ $group->groupName }}</option>
+                                        <option value="{{ $group->id }}" @if ($user->userable?->group_id === $group->id) selected @endif>
+                                            {{ $group->groupName }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
 
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Save') }}</x-primary-button>

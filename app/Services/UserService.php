@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Enums\UserType;
+use App\Mail\UserPasswordMail;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class UserService
 {
-    public function create(array $data)
+    public function create(array $data): User
     {
         $user = User::create([
             'email' => $data['email'],
@@ -18,27 +20,37 @@ class UserService
 
         unset($data['type']);
 
-        info('data', [$data]);
-
         $morphUser->fill($data)->save();
 
         $morphUser->user()->save($user);
+
+        Mail::to($data['email'])->send(new UserPasswordMail($data['password']));
+
+        return $user;
     }
 
-    public function update(User $user, array $data)
+    public function update(User $user, array $data): User
     {
-
-        $user->update([
+        $updateData = [
             'email' => $data['email'],
-            'password' => $data['password'],
-        ]);
+        ];
 
-        $morphUser = UserType::tryFrom($data['type'])->getType();
+        if ($data['password']) {
+            $updateData['password'] = $data['password'];
+        }
+
+        $user->update($updateData);
 
         unset($data['type']);
 
-        info('data', [$data]);
+        $user->userable->update($data);
 
-        $morphUser->fill($data)->save();
+        return $user;
+    }
+
+    public function delete(User $user)
+    {
+        $user->userable?->delete();
+        $user->delete();
     }
 }

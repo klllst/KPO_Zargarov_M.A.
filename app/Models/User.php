@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,5 +48,12 @@ class User extends Authenticatable
     public function userable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function type(): Attribute
+    {
+        return new Attribute(
+            get: fn() => UserType::getTypeByClass($this->userable_type)
+        );
     }
 }

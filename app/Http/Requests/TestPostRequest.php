@@ -35,7 +35,8 @@ class TestPostRequest extends FormRequest
                     ->where('group_id', $this->group_id)
                     ->where('subject_id', $this->subject_id)
                     ->where('type', $this->type)
-            ]
+            ],
+            'teacher_id' => 'nullable|integer|exists:teachers,id'
         ];
     }
 }
