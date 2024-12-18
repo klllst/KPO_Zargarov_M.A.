@@ -65,18 +65,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserPostRequest $request, User $user)
+    public function update(UserPostRequest $request, User $user, UserService $service)
     {
+        $service->update($user, $request->validated());
+
         return redirect()->route('users.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user, UserService $service)
     {
-        $user->userable->delete();
-        $user->delete();
+        $service->delete($user);
 
         return redirect()->route('users.index');
     }

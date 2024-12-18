@@ -20,7 +20,7 @@
                     <td class="border border-gray-300 px-4 py-2">{{ $group->groupName }}</td>
                     <td class="border border-gray-300 px-4 py-2">
                         <div class="flex space-x-2">
-                            <a href="{{ route('groups.show', [$group]) }}" class="bg-blue-500 text-white px-4 py-2 rounded">Просмотр</a>
+                            <a href="{{ route('groups.export', [$group]) }}" class="bg-blue-500 text-white px-4 py-2 rounded">Список</a>
                             <a href="{{ route('groups.edit', [$group]) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Редактировать</a>
                             <form action="{{ route('groups.destroy', [$group]) }}" method="POST">
                                 @csrf

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ScoreEnum;
 use App\Http\Requests\ScorePostRequest;
 use App\Models\Score;
 use App\Models\Test;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ScoreController extends Controller
@@ -14,59 +16,25 @@ class ScoreController extends Controller
      */
     public function index(Test $test)
     {
-        return view('test-scores.index', [
+        return view('tests-scores.index', [
             'test' => $test,
-            'scores' => $test->scores()->with(['students', 'teacher'])->get(),
+            'scores' => $test->scores()->with(['student', 'teacher'])->get(),
+            'marks' => ScoreEnum::getTestTypeScores($test->type)
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view();
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ScorePostRequest $request)
-    {
-        return redirect()->route('scores.show');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Score $score)
-    {
-        return view();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Score $score)
-    {
-        return view();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ScorePostRequest $request, Score $score)
+    public function update(Request $request, Test $test, Score $score)
     {
-        return redirect()->route('scores.show', []);
+        $score->update([
+            'mark' => $request->mark,
+        ]);
+
+        return redirect()->route('tests.scores.index', [$test]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Score $score)
-    {
-        return redirect()->route('scores.index');
-    }
 
     public function selfScores()
     {

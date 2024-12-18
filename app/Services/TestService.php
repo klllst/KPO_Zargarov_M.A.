@@ -15,11 +15,15 @@ class TestService
         $students = $test->group->students;
 
         foreach ($students as $student) {
-            Score::create([
+            $createData = [
                 'student_id' => $student->id,
                 'test_id' => $test->id,
                 'mark' => ScoreEnum::WinthoutScore,
-            ]);
+            ];
+
+            $createData['teacher_id'] = $data['teacher_id'];
+
+            Score::create($createData);
         }
 
         return $test;

@@ -37,10 +37,14 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::resource('faculties', FacultyController::class)->except('show');
-    Route::resource('groups', GroupController::class);
     Route::resource('subjects', SubjectController::class)->except('show');
     Route::resource('tests', TestController::class)->except('show');
-    Route::resource('tests.scores', ScoreController::class)->except('show');
+    Route::resource('tests.scores', ScoreController::class)->only(['index', 'update']);
+});
+
+Route::middleware(['auth', 'admin-teacher'])->group(function () {
+    Route::resource('groups', GroupController::class);
+    Route::get('/groups/{group}/export', [GroupController::class, 'export'])->name('groups.export');
 });
 
 Route::middleware(['auth', 'student'])->group(function () {

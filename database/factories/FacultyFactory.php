@@ -17,7 +17,7 @@ class FacultyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Факультет' . fake()->unique()->numberBetween(1, 100)
+            'name' => 'Факультет' . fake()->unique()->numberBetween(1, 1000)
         ];
     }
 }

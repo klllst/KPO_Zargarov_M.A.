@@ -20,13 +20,18 @@
                             {{ __('Факультеты') }}
                         </x-nav-link>
                     </div>
+                @endif
 
+                @if(\Illuminate\Support\Facades\Auth::user()->userable_type == \App\Models\Admin::class ||
+                    \Illuminate\Support\Facades\Auth::user()->userable_type == \App\Models\Teacher::class)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('groups.index')" :active="request()->routeIs('groups.index')">
                             {{ __('Группы') }}
                         </x-nav-link>
                     </div>
+                @endif
 
+                @if(\Illuminate\Support\Facades\Auth::user()->userable_type == \App\Models\Admin::class)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.index')">
                             {{ __('Предметы') }}

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TestPostRequest;
+use App\Models\Group;
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\Test;
 use App\Services\TestService;
 use Illuminate\Http\Request;
@@ -27,7 +30,11 @@ class TestController extends Controller
      */
     public function create()
     {
-        return view('tests.create');
+        return view('tests.create', [
+            'groups' => Group::all(),
+            'subjects' => Subject::all(),
+            'teachers' => Teacher::all(),
+        ]);
     }
 
     /**
@@ -57,7 +64,12 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        return view();
+        return view('tests.edit', [
+            'test' => $test,
+            'groups' => Group::all(),
+            'subjects' => Subject::all(),
+            'teachers' => Teacher::all(),
+        ]);
     }
 
     /**
@@ -67,7 +79,9 @@ class TestController extends Controller
     {
         $test->update($request->validated());
 
-        return redirect()->route('tests.show', []);
+        return redirect()->route('tests.scores.index', [
+            'test' => $test,
+        ]);
     }
 
     /**
