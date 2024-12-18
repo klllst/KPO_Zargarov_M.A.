@@ -19,8 +19,8 @@ class AdminTeacherAction
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->userable_type == Admin::class ||
-            Auth::user()->userable_type == Teacher::class) {
+        if (!Auth::user()->userable_type == Admin::class &&
+            !Auth::user()->userable_type == Teacher::class) {
             abort(403);
         }
 
