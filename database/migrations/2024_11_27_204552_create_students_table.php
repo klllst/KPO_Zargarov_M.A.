@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('middle_name')->nullable();
             $table->date('birthday');
-            $table->foreignId('group_id')->constrained('groups');
+            $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete();
             $table->timestamps();
         });
     }
